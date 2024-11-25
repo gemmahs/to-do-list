@@ -1,5 +1,6 @@
 from config import db
 from datetime import datetime
+from sqlalchemy import CheckConstraint
 
 
 # db.relationship: Defines the relationship on the parent side (User).

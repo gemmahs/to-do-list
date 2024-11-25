@@ -12,7 +12,7 @@ def index():
         task_list = [{
             'id': task.id, 
             'content': task.content,
-            'created_at': task.created_at.strftime("%Y/%m/%d %H:%M:%S"), 
+            'created_at': task.created_at.strftime("%Y/%m/%d %H:%M"), 
             'creator_id': task.creator_id, 
             'creator': task.creator.username, 
             "status": task.status
@@ -46,14 +46,15 @@ def add_task():
     data = request.get_json()
     username = data.get('username')
     content = data.get('content')
+    print(f'Content: {content}\nUsername: {username}')
 
-    if username is None or content is None:
+    if not username or not content:
         return jsonify({'message': 'Input must not be empty'}), 400
     
     # 根据名字查找 id。如果名字不在数据库中，则增加此名字
-    creator = User.query.filter_by(username=username).first() # 如果没查到则返回空值
+    creator = User.query.filter_by(username=username.strip()).first() # 如果没查到则返回空值
     if not creator:
-        creator = User(username=username)
+        creator = User(username=username.strip())
         try:
             db.session.add(creator)
             db.session.commit()
@@ -61,7 +62,7 @@ def add_task():
             db.session.rollback()
             return jsonify({'message': 'Failed to create the new user', 'error': str(e)}), 400
     
-    task = Task(content=content, creator_id=creator.id)
+    task = Task(content=content.strip(), creator_id=creator.id)
     try:
         db.session.add(task)
         db.session.commit()
@@ -104,6 +105,21 @@ def delete_task(id):
         db.session.rollback()
         return jsonify({'message': 'Failed to delete the task', 'error': str(e)}), 400
     return jsonify({'message': 'Task Successfully Deleted'}), 200
+
+
+@app.route('/users', methods=['GET',])
+def get_users():
+    query = request.args.get('q', default='')
+    if not query:
+        return jsonify({'message': 'No user specified'}), 400
+    try:
+        users = User.query.filter(User.username.ilike(f"{query}%")).all()
+        if not users:
+            return jsonify({'message': 'No users found'}), 404
+        user_list = [user.username for user in users]
+        return jsonify(user_list), 200
+    except Exception as e:
+        return jsonify({'message': 'Failed to fetch users', 'error': str(e)}), 400
 
 
 
