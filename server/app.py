@@ -17,7 +17,6 @@ def index():
             'creator': task.creator.username, 
             "status": task.status
              } for task in tasks]
-        # print(tasks[0].created_at, type(tasks[0].created_at))
         return jsonify(task_list), 200
     except Exception as e:
         return jsonify({'message': 'Failed to fetch the tasks', 'error': str(e)}), 400
