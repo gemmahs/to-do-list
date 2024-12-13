@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 import ReactQueryClientProvider from "@/components/ReactQueryClientProvider";
 
 const geistSans = localFont({
@@ -34,6 +35,7 @@ export default function RootLayout({
             To Do List
           </h1>
           {children}
+          <Toaster />
         </body>
       </html>
     </ReactQueryClientProvider>

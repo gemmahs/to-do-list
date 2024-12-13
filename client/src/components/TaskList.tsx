@@ -1,9 +1,10 @@
 "use client";
 
-import { Pencil } from "lucide-react";
 import DeleteButton from "@/components/DeleteButton";
-import TaskCheckbox from "@/components/TaskCheckbox";
+import TaskContent from "@/components/TaskContent";
 import { useQuery } from "@tanstack/react-query";
+import ScaleLoader from "react-spinners/ScaleLoader";
+import Link from "next/link";
 
 export interface Task {
   id: number;
@@ -23,54 +24,62 @@ function TaskList() {
     queryKey: ["tasks"],
     queryFn: async () => {
       const res = await fetch("http://localhost:5000");
-      const data = res.json();
-      console.log("React Query fetched the data");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
       console.log(data);
       return data;
     },
   });
 
-  if (isPending) return "Loading...";
+  if (isPending)
+    return (
+      <div className="text-center mt-3">
+        <ScaleLoader />
+        <p>Loading...</p>
+      </div>
+    );
 
   if (error) return "An error has occurred: " + error.message;
 
   return (
-    <table className="w-full border-b-2 text-center mx-auto mt-3">
-      <thead>
-        <tr className="border-b-2">
-          <th className="px-1 min-w-40 w-1/2">Task</th>
-          <th className="">Created Time</th>
-          <th className="">Creator</th>
-          <th className="">Operation</th>
-        </tr>
-      </thead>
-      <tbody className="divide-y divide-dotted">
-        {tasks.map((task: Task, index: number) => (
-          <tr key={index}>
-            <td>
-              <div className="flex justify-between items-center gap-3">
-                <TaskCheckbox
+    <div className="overflow-x-auto">
+      <table className="w-full border-b-2 text-center mx-auto mt-3">
+        <thead>
+          <tr className="border-b-2">
+            <th className="px-1 min-w-48 w-1/2">Task</th>
+            <th>Created Time</th>
+            <th>Creator</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-dotted">
+          {tasks.map((task: Task, index: number) => (
+            <tr key={index}>
+              <td>
+                <TaskContent
                   id={task.id}
                   content={task.content}
                   status={task.status}
                 />
-
-                <div>
-                  <Pencil size={20} />
-                </div>
-              </div>
-            </td>
-            <td className="text-xs sm:text-sm lg:text-base">
-              {task.created_at}
-            </td>
-            <td className="">{task.creator}</td>
-            <td>
-              <DeleteButton id={task.id} />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+              </td>
+              <td className="text-sm md:text-base">
+                {task.created_at}
+              </td>
+              <td>
+                <Link href={`http://localhost:3000/user/${task.creator_id}`}>
+                  <span className="underline decoration-1 decoration-dashed decoration-gray-400 underline-offset-4">
+                    {task.creator}
+                  </span>
+                </Link>
+              </td>
+              <td>
+                <DeleteButton id={task.id} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 

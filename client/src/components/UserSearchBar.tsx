@@ -12,7 +12,7 @@ function UserSearchBar({ searchTerm, setSearchTerm }: UserProps) {
   const [error, setError] = useState<string | null>(null);
   const [highlightIndex, setHighlightIndex] = useState<number | null>(null);
   const [selected, setSelected] = useState(false); // Track if an item has been selected
-  const searchBarRef = useRef<HTMLDivElement>(null);
+  const searchBarRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,7 +66,7 @@ function UserSearchBar({ searchTerm, setSearchTerm }: UserProps) {
     };
   }, []);
 
-  function handleUserInput(e) {
+  function handleUserInput(e: React.ChangeEvent<HTMLInputElement>) {
     if (!searchTerm.trim()) {
       setError(null);
       setSearchResults([]);
@@ -83,7 +83,7 @@ function UserSearchBar({ searchTerm, setSearchTerm }: UserProps) {
     setSelected(true);
   }
 
-  function handleKeyDown(e) {
+  function handleKeyDown(e: React.KeyboardEvent) {
     if (searchResults.length === 0) return;
 
     if (e.key === "ArrowUp") {

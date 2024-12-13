@@ -6,8 +6,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { capitalize } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AddTask() {
+  const { toast } = useToast();
   const [task, setTask] = useState("");
   const [user, setUser] = useState("");
 
@@ -23,21 +25,30 @@ export default function AddTask() {
   };
 
   async function onSubmit() {
-    if (task.trim() && user.trim()) {
-      const res = await fetch(url, options);
-      const data = await res.json();
-      console.log(data);
-      setTask("");
-      setUser("");
-    } else {
-      alert("Task content and user must not be empty");
-    }
+    const res = await fetch(url, options);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    // console.log(data);
+    toast({
+      variant: "success",
+      description: data.message,
+    });
+    setTask("");
+    setUser("");
   }
 
   const mutation = useMutation({
     mutationFn: onSubmit,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+    onError: (error) => {
+      // if (error instanceof Error) {
+      toast({
+        variant: "destructive",
+        description: error.message,
+      });
+      // }
     },
   });
 
@@ -49,7 +60,20 @@ export default function AddTask() {
         <UserSearchBar searchTerm={user} setSearchTerm={setUser} />
 
         <div>
-          <Button onClick={() => mutation.mutate()}>Add</Button>
+          <Button
+            onClick={() => {
+              if (!task.trim() || !user.trim()) {
+                toast({
+                  variant: "destructive",
+                  description: "Task content & username must not be empty",
+                });
+                return;
+              }
+              mutation.mutate();
+            }}
+          >
+            Add
+          </Button>
         </div>
       </div>
     </div>

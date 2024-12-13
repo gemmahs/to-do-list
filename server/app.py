@@ -8,7 +8,7 @@ def index():
     try:
         tasks = Task.query.all()
         if not tasks:
-            return jsonify({'message': 'No task has been created'}), 404
+            return jsonify({'message': 'There are no tasks currently. Create one now!'}), 404
         task_list = [{
             'id': task.id, 
             'content': task.content,
@@ -19,13 +19,13 @@ def index():
              } for task in tasks]
         return jsonify(task_list), 200
     except Exception as e:
-        return jsonify({'message': 'Failed to fetch the tasks', 'error': str(e)}), 400
+        return jsonify({'message': f'Failed to fetch the tasks. Error: {str(e)}'}), 400
 
 
 @app.route('/task/<int:id>', methods=['GET',])
 def get_task(id):
     try:
-        task = db.session.get(Task, id)
+        task = db.session.get(Task, id) #如果没查到返回 None
         if task is None:
             return jsonify({'message': 'Task Not Found'}), 404
         return jsonify({
@@ -37,8 +37,40 @@ def get_task(id):
             'creator': task.creator.username
         }), 200
     except Exception as e:
-        return jsonify({'message': 'Failed to fetch the task', 'error': str(e)}), 400
+        return jsonify({'message': f'Failed to fetch the task. Error: {str(e)}'}), 400
 
+# Get all the tasks that are created by the user
+# Fetch data by creator_id
+@app.route('/user/<int:id>', methods=['GET',])
+def get_user(id):
+    try:
+        creator = db.session.get(User, id) #如果没查到返回 None
+        if creator is None:
+            return jsonify({'message': 'User Not Found'}), 404
+        tasks = Task.query.filter_by(creator_id=id).all() # 如果没查到返回一个空列表而不是 None
+        if not tasks:
+            return jsonify({
+            "creator": {
+                "id": id,
+                "name": creator.username
+                },
+            "tasks": []
+            }), 200
+        task_list = [{
+            'id': task.id, 
+            'content': task.content,
+            'created_at': task.created_at.strftime("%Y/%m/%d %H:%M"), 
+            'status': task.status,
+             } for task in tasks]
+        return jsonify({
+            "creator": {
+                "id": id,
+                "name": creator.username
+                },
+            "tasks": task_list
+            }), 200
+    except Exception as e:
+        return jsonify({'message': f'Failed to fetch the tasks. Error: {str(e)}'}), 400
 
 @app.route('/add', methods=['POST',])
 def add_task():
@@ -59,7 +91,7 @@ def add_task():
             db.session.commit()
         except Exception as e:
             db.session.rollback()
-            return jsonify({'message': 'Failed to create the new user', 'error': str(e)}), 400
+            return jsonify({'message': f'Failed to create the new user. Error: {str(e)}'}), 400
     
     task = Task(content=content.strip(), creator_id=creator.id)
     try:
@@ -67,7 +99,7 @@ def add_task():
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'Failed to add the task', 'error': str(e)}), 400
+        return jsonify({'message': f'Failed to add the task. Error: {str(e)}'}), 400
     return jsonify({"message": "Task created successfully"}), 201
 
 
@@ -87,7 +119,7 @@ def edit_task(id):
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'Edit Task Failed', 'error': str(e)}), 400
+        return jsonify({'message': f'Edit Task Failed. Error: {str(e)}'}), 400
     return jsonify({'message': 'Task succesfully Updated'}), 200
 
 
@@ -102,7 +134,7 @@ def delete_task(id):
         db.session.commit()
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'Failed to delete the task', 'error': str(e)}), 400
+        return jsonify({'message': f'Failed to delete the task. Error: {str(e)}'}), 400
     return jsonify({'message': 'Task Successfully Deleted'}), 200
 
 
@@ -118,7 +150,7 @@ def get_users():
         user_list = [user.username for user in users]
         return jsonify(user_list), 200
     except Exception as e:
-        return jsonify({'message': 'Failed to fetch users', 'error': str(e)}), 400
+        return jsonify({'message': f'Failed to fetch users. Error: {str(e)}'}), 400
 
 
 
