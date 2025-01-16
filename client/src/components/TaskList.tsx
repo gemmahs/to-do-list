@@ -62,9 +62,7 @@ function TaskList() {
                   status={task.status}
                 />
               </td>
-              <td className="text-sm md:text-base">
-                {task.created_at}
-              </td>
+              <td className="text-sm md:text-base">{task.created_at}</td>
               <td>
                 <Link href={`http://localhost:3000/user/${task.creator_id}`}>
                   <span className="underline decoration-1 decoration-dashed decoration-gray-400 underline-offset-4">

@@ -56,6 +56,7 @@ def get_user(id):
                 },
             "tasks": []
             }), 200
+        
         task_list = [{
             'id': task.id, 
             'content': task.content,
@@ -155,4 +156,4 @@ def get_users():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

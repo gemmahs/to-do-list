@@ -103,39 +103,41 @@ function UserSearchBar({ searchTerm, setSearchTerm }: UserProps) {
   }
 
   return (
-    <div ref={searchBarRef} className="flex-1 relative">
+    <div className="flex-1">
       <Label htmlFor="user">Username</Label>
-      <Input
-        type="text"
-        id="user"
-        placeholder="Enter username"
-        autoComplete="off"
-        value={searchTerm}
-        onChange={handleUserInput}
-        onKeyDown={handleKeyDown}
-      />
+      <div ref={searchBarRef} className="relative">
+        <Input
+          type="text"
+          id="user"
+          placeholder="Enter username"
+          autoComplete="off"
+          value={searchTerm}
+          onChange={handleUserInput}
+          onKeyDown={handleKeyDown}
+        />
 
-      {searchResults.length > 0 && (
-        <div className="absolute top-100% mt-1 w-full p-2 space-y-2 bg-white rounded-md shadow-[0px_0px_10px_0px_rgba(0,0,0,0.5)]">
-          {searchResults.map((result: string, index: number) => (
-            <p
-              className={`hover:bg-accent transition-colors p-1 rounded-sm cursor-pointer ${
-                index === highlightIndex ? "bg-accent" : ""
-              }`}
-              key={index}
-              onClick={() => selectUser(result)}
-            >
-              {result}
-            </p>
-          ))}
-        </div>
-      )}
+        {searchResults.length > 0 && (
+          <div className="absolute top-100% mt-1 w-full p-2 space-y-2 bg-white rounded-md shadow-[0px_0px_10px_0px_rgba(0,0,0,0.5)]">
+            {searchResults.map((result: string, index: number) => (
+              <p
+                className={`hover:bg-accent transition-colors p-1 rounded-sm cursor-pointer ${
+                  index === highlightIndex ? "bg-accent" : ""
+                }`}
+                key={index}
+                onClick={() => selectUser(result)}
+              >
+                {result}
+              </p>
+            ))}
+          </div>
+        )}
 
-      {error && (
-        <div className="absolute top-100% mt-1 w-full p-2 bg-white rounded-md shadow-[0px_0px_10px_0px_rgba(0,0,0,0.5)]">
-          <p>{error}</p>
-        </div>
-      )}
+        {error && (
+          <div className="absolute top-100% mt-1 w-full p-2 bg-white rounded-md shadow-[0px_0px_10px_0px_rgba(0,0,0,0.5)]">
+            <p>{error}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
