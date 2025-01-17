@@ -75,7 +75,7 @@ function EditTaskContent({
       return;
     }
     if (trimmedInput !== content) {
-      console.log(trimmedInput);
+      // console.log(trimmedInput);
       setContent(trimmedInput);
       mutate(trimmedInput);
     }

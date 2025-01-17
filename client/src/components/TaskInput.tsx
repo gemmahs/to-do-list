@@ -7,9 +7,9 @@ type ContentProps = {
   setTask: React.Dispatch<React.SetStateAction<string>>;
 };
 function TaskInput({ task, setTask }: ContentProps) {
-  function handleTaskInput(e) {
+  function handleTaskInput(e: React.ChangeEvent<HTMLInputElement>) {
     setTask(e.target.value);
-    console.log(`Task: ${task}`);
+    // console.log(`Task: ${task}`);
   }
 
   return (

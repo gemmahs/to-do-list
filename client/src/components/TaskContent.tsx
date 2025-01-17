@@ -88,9 +88,7 @@ function TaskContent({ id, content, status }: TaskProps) {
               checked ? "line-through" : ""
             }`}
           >
-            <Link href={`http://localhost:3000/task/${id}`}>
-              {updatedContent}
-            </Link>
+            <Link href={`/task/${id}`}>{updatedContent}</Link>
           </label>
 
           <TooltipProvider>

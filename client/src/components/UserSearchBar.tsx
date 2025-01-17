@@ -1,4 +1,5 @@
 "use client";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState, useEffect, useRef } from "react";
@@ -72,7 +73,7 @@ function UserSearchBar({ searchTerm, setSearchTerm }: UserProps) {
       setSearchResults([]);
     }
     setSearchTerm(e.target.value);
-    console.log(`Search Term: ${searchTerm}`);
+    // console.log(`Search Term: ${searchTerm}`);
     setSelected(false);
   }
 

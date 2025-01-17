@@ -10,7 +10,7 @@ export default function Layout({
     <section className="max-w-5xl mx-auto p-6 font-[family-name:var(--font-geist-sans)]">
       <div className="flex">
         <Link
-          href="http://localhost:3000/"
+          href="/"
           className="flex gap-3 items-center px-2 py-1 text-lg cursor-pointer rounded hover:bg-secondary"
         >
           <ArrowLeft />
