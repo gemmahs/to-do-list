@@ -42,28 +42,36 @@
       "react": "$react"
     },
     "@radix-ui/react-checkbox": {
-      "react": "$react"
+      "react": "$react",
+      "react-dom": "$react-dom"
     },
     "@radix-ui/react-dialog": {
-      "react": "$react"
+      "react": "$react",
+      "react-dom": "$react-dom"
     },
     "@radix-ui/react-label": {
-      "react": "$react"
+      "react": "$react",
+      "react-dom": "$react-dom"
     },
     "@radix-ui/react-select": {
-      "react": "$react"
+      "react": "$react",
+      "react-dom": "$react-dom"
     },
     "@radix-ui/react-slot": {
-      "react": "$react"
+      "react": "$react",
+      "react-dom": "$react-dom"
     },
     "@radix-ui/react-toast": {
-      "react": "$react"
+      "react": "$react",
+      "react-dom": "$react-dom"
     },
     "@radix-ui/react-tooltip": {
-      "react": "$react"
+      "react": "$react",
+      "react-dom": "$react-dom"
     },
     "react-spinners": {
-      "react": "$react"
+      "react": "$react",
+      "react-dom": "$react-dom"
     }
   }
 }
