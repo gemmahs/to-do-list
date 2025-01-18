@@ -8,20 +8,22 @@ type UserProps = {
   searchTerm: string;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
 };
-function UserSearchBar({ searchTerm, setSearchTerm }: UserProps) {
+export default function UserSearchBar({
+  searchTerm,
+  setSearchTerm,
+}: UserProps) {
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [highlightIndex, setHighlightIndex] = useState<number | null>(null);
   const [selected, setSelected] = useState(false); // Track if an item has been selected
   const searchBarRef = useRef<HTMLInputElement>(null);
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   useEffect(() => {
     const fetchData = async () => {
       if (searchTerm.trim() && !selected) {
         try {
-          const res = await fetch(
-            `http://localhost:5000/users?q=${searchTerm.trim()}`
-          );
+          const res = await fetch(`${baseUrl}/users?q=${searchTerm.trim()}`);
           const data = await res.json();
           if (res.status === 200) {
             setSearchResults(data);
@@ -142,4 +144,3 @@ function UserSearchBar({ searchTerm, setSearchTerm }: UserProps) {
     </div>
   );
 }
-export default UserSearchBar;

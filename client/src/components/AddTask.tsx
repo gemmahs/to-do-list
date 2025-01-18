@@ -10,11 +10,12 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function AddTask() {
   const { toast } = useToast();
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [task, setTask] = useState("");
   const [user, setUser] = useState("");
 
   const queryClient = useQueryClient();
-  const url = `http://localhost:5000/add`;
+  const url = `${baseUrl}/add`;
   const options = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -46,7 +47,7 @@ export default function AddTask() {
       // if (error instanceof Error) {
       toast({
         variant: "destructive",
-        description: error.message,
+        description: error.message || "An unknown error has occurred",
       });
       // }
     },

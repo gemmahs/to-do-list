@@ -5,6 +5,7 @@ import TaskContent from "@/components/TaskContent";
 import { useQuery } from "@tanstack/react-query";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import Link from "next/link";
+import { Divide } from "lucide-react";
 
 export interface Task {
   id: number;
@@ -15,7 +16,8 @@ export interface Task {
   creator_id: number;
 }
 
-function TaskList() {
+export default function TaskList() {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const {
     data: tasks,
     isPending,
@@ -23,10 +25,10 @@ function TaskList() {
   } = useQuery({
     queryKey: ["tasks"],
     queryFn: async () => {
-      const res = await fetch("http://localhost:5000");
+      const res = await fetch(`${baseUrl}`);
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
-      console.log(data);
+      // console.log(data);
       return data;
     },
   });
@@ -39,7 +41,12 @@ function TaskList() {
       </div>
     );
 
-  if (error) return "An error has occurred: " + error.message;
+  if (error)
+    return (
+      <div className="text-center mt-3">
+        An error has occurred: {error.message}
+      </div>
+    );
 
   return (
     <div className="overflow-x-auto">
@@ -80,5 +87,3 @@ function TaskList() {
     </div>
   );
 }
-
-export default TaskList;

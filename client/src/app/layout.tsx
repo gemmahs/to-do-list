@@ -17,7 +17,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "To Do List",
-  description: "Manage your to do list here",
+  description: "Manage your to-dos here",
 };
 
 export default function RootLayout({

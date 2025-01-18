@@ -17,10 +17,11 @@ import { Button } from "@/components/ui/button";
 
 function DeleteButton({ id }: { id: number }) {
   const queryClient = useQueryClient();
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const { toast } = useToast();
 
   async function handleDelete(id: number) {
-    const url = `http://localhost:5000/delete/${id}`;
+    const url = `${baseUrl}/delete/${id}`;
     const options = {
       method: "DELETE",
     };
@@ -38,7 +39,7 @@ function DeleteButton({ id }: { id: number }) {
       if (error instanceof Error) {
         toast({
           variant: "destructive",
-          description: error.message,
+          description: error.message || "An unknown error has occurred",
         });
       }
     }
@@ -64,7 +65,9 @@ function DeleteButton({ id }: { id: number }) {
           </DialogHeader>
 
           <DialogFooter className="gap-2">
-            <Button variant="destructive" onClick={() => mutation.mutate(id)}>Delete</Button>
+            <Button variant="destructive" onClick={() => mutation.mutate(id)}>
+              Delete
+            </Button>
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>

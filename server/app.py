@@ -78,7 +78,7 @@ def add_task():
     data = request.get_json()
     username = data.get('username')
     content = data.get('content')
-    print(f'Content: {content}\nUsername: {username}')
+    # print(f'Content: {content}\nUsername: {username}')
 
     if not username or not content:
         return jsonify({'message': 'Input must not be empty'}), 400
@@ -108,7 +108,7 @@ def add_task():
 def edit_task(id):
     # 根据id查询task表
     task = db.session.get(Task, id) #是一个对象
-    print(task)
+    # print(task)
     if task is None: #如果没查到
         return jsonify({'message': 'Task Not Found'}), 404
     
@@ -127,7 +127,7 @@ def edit_task(id):
 @app.route('/delete/<int:id>', methods=['DELETE',])
 def delete_task(id):
     task = db.session.get(Task, id)
-    print(task)
+    # print(task)
     if task is None:
         return jsonify({'message': 'Task Not Found'}), 404
     try:

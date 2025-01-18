@@ -22,13 +22,14 @@ function EditTaskContent({
   // 不用 useState搭配onChange的原因是没有必要记录输入框里的每一次变化。我只需要点击确认按钮时输入框里的值
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   async function editContent(input: string) {
     const updatedTask = {
       id,
       content: input,
     };
-    const url = `http://localhost:5000/edit/${id}`;
+    const url = `${baseUrl}/edit/${id}`;
     const options = {
       method: "PATCH",
       headers: {
@@ -48,7 +49,7 @@ function EditTaskContent({
     onError: (error) => {
       toast({
         variant: "destructive",
-        description: `${error.message}`,
+        description: error.message || "An unknown error has occurred",
       });
     },
     onSuccess: () => {

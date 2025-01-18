@@ -1,7 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-export default function Layout({
+export default function UserLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

@@ -1,4 +1,5 @@
 "use client";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import { debounce } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -25,13 +26,14 @@ function TaskContent({ id, content, status }: TaskProps) {
   const [updatedContent, setUpdatedContent] = useState(content);
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   async function editStatus(isChecked: boolean) {
     const updatedStatus = {
       id,
       status: isChecked ? "finished" : "unfinished",
     };
-    const url = `http://localhost:5000/edit/${id}`;
+    const url = `${baseUrl}/edit/${id}`;
     const options = {
       method: "PATCH",
       headers: {
@@ -51,7 +53,7 @@ function TaskContent({ id, content, status }: TaskProps) {
     onError: (error) => {
       toast({
         variant: "destructive",
-        description: `${error.message}`,
+        description: error.message || "An unknow error has occurred",
       });
     },
     onSuccess: () => {
