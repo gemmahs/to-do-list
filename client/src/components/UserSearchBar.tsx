@@ -33,7 +33,7 @@ export default function UserSearchBar({
             setError(data.message);
           }
         } catch (e) {
-          setError(e.message);
+          setError((e as Error).message);
           setSearchResults([]);
         }
       } else if (!searchTerm.trim()) {
