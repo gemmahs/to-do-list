@@ -91,7 +91,7 @@ export default async function UserPage({ params }: { params: { id: string } }) {
           </>
         ) : (
           <div className="text-center my-4 text-xl font-semibold">
-            {creator.name} hasn't created any task
+            {creator.name} hasn&apos;t created any task
           </div>
         )}
       </div>

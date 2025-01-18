@@ -33,7 +33,7 @@ export default function UserSearchBar({
             setError(data.message);
           }
         } catch (e) {
-          setError("Failed to fetch data");
+          setError(e.message);
           setSearchResults([]);
         }
       } else if (!searchTerm.trim()) {

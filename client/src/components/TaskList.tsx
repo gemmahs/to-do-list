@@ -5,7 +5,6 @@ import TaskContent from "@/components/TaskContent";
 import { useQuery } from "@tanstack/react-query";
 import ScaleLoader from "react-spinners/ScaleLoader";
 import Link from "next/link";
-import { Divide } from "lucide-react";
 
 export interface Task {
   id: number;
