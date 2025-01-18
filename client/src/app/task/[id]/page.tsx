@@ -1,7 +1,11 @@
 import { notFound } from "next/navigation";
 import { Bell, CircleCheckBig } from "lucide-react";
 
-export default async function TaskPage({ params }: { params: { id: string } }) {
+export default async function TaskPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const num = Number(id);

@@ -13,7 +13,11 @@ type Task = {
   created_at: string;
   status: "finished" | "unfinished";
 };
-export default async function UserPage({ params }: { params: { id: string } }) {
+export default async function UserPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const num = Number(id);
